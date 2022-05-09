@@ -1,0 +1,55 @@
+{% extends 'base.html' %}
+
+
+{% block main_content %}
+
+<h1>EPG sources</h1>
+
+{% if all_epg %}
+<ol class="list-group list-group-numbered">
+    {% for epg in all_epg %}
+    <li class="list-group-item d-flex justify-content-between align-items-start" style="border: 0px">
+        <div class="ms-2 me-auto">
+            <div class="fw-bold">
+                <a href="{% url 'epg_app:epg_detail' epg.pk %}" class="link-dark" style="text-decoration: none;">{{ epg.name }}</a>
+                {% if epg.download_time %}
+                - <b>{{ epg.size_str }}</b>
+                {% endif %}
+            </div>
+            <i style="color:#666666">{{ epg.url }}</i>
+        </div>
+    </li>
+    {% endfor %}
+</ol>
+{% else %}
+No EPG sources found<br/>
+{% endif %}
+
+<br/>
+
+{% if user.is_superuser %}
+<table>
+    <tr>
+        <td style="padding-right: 15px;">
+            <form action="{% url 'epg_app:add_epg' %}">
+                <input type="submit" value="Add EPG source" class="btn btn-secondary"/>
+            </form>
+        </td>
+        {% if all_epg %}
+        <td style="padding-right: 15px;">
+            <form action="{% url 'epg_app:download_epg' %}">
+                <input type="submit" value="Force download all EPG" class="btn btn-danger"/>
+            </form>
+        </td>
+        {% else %}
+        <td style="padding-right: 15px;">
+            <form action="{% url 'epg_app:init_epg' %}">
+                <input type="submit" value="Init EPG list by test values" class="btn btn-danger"/>
+            </form>
+        </td>
+        {% endif %}
+    </tr>
+</table>
+{% endif %}
+
+{% endblock %}

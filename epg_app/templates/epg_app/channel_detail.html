@@ -1,0 +1,13 @@
+{% extends 'channels/base.html' %}
+
+{% block main_content %}
+    <p>
+        <h1 style="display: inline-block">{{ object.name }}</h1> <a href="{% url 'channel_update' object.pk %}">[edit]</a> <a href="{% url 'channel_delete' object.pk %}">[delete]</a>
+        <br/><b>Resolution:</b> {{ object.resolution }}
+        {% if object.get_categories %}
+            <br/><b>Categories:</b> {{ object.get_categories }}
+        {% endif %}
+        <br/>---------------<br/>
+        {{ object.desc }}
+    </p>
+{% endblock %}

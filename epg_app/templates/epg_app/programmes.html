@@ -1,0 +1,30 @@
+{% extends 'base.html' %}
+
+{% block main_content %}
+
+<h1>
+    {{ channel_name }} > Programmes
+</h1>
+
+{% if programmes %}
+<table style="border:1px;border-colour:#000000">
+    {% for programme in programmes %}
+
+    <tr>
+        <td style="width:250px;height:35px;border:1px;border-colour:#000000">
+            {{ programme.start }}
+        </td>
+        <td>
+            {{ programme.data }}
+        </td>
+    </tr>
+    {% endfor %}
+</table>
+
+{% include "./pagination.html" with page=posts %}
+
+{% else %}
+No channels found
+{% endif %}
+
+{% endblock %}

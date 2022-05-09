@@ -1,0 +1,23 @@
+{% extends 'base.html' %}
+
+{% block main_content %}
+<h1>EPG download status</h1>
+<ol>
+    {% for epg in download_status %}
+    <li>
+        <b>{{ epg.info.name }}</b>
+        {% if epg.info.is_epg is True %}
+        epg
+        {% else %}
+        logos
+        {% endif %}
+
+        {% if not epg.error_message %}
+        loaded, size: <b>{{ epg.size_str }}</b>
+        {% else %}
+        error: <b>{{ epg.error_message }}</b>
+        {% endif %}
+    </li>
+    {% endfor %}
+</ol>
+{% endblock %}

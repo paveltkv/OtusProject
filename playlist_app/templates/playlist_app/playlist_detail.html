@@ -1,0 +1,41 @@
+{% extends 'base.html' %}
+
+{% block main_content %}
+<h1>{{ object.name }}</h1>
+Url: <b>{{ object.url }}</b><br/>
+Marker: <b>{{ object.marker }}</b><br/>
+{% if object.download_time %}
+Downloaded: <b>{{ object.download_time }}</b><br/>
+{% endif %}
+{% if object.error_message %}
+Error: <b>{{ object.error_message }}</b><br/>
+{% endif %}
+<table style="margin: 10px 0px 10px 0px">
+    <tr>
+        <td style="padding-right: 15px;">
+            <form action="{% url 'playlist_app:playlist_update' object.pk %}">
+                <input type="submit" value="Edit" class="btn btn-secondary"/>
+            </form>
+        </td>
+        <td style="padding-right: 15px;">
+            <form action="{% url 'playlist_app:playlist_delete' object.pk %}">
+                <input type="submit" value="Delete" class="btn btn-secondary"/>
+            </form>
+        </td>
+    </tr>
+</table>
+{% if list_data %}
+<br/>
+<h1>List:</h1>
+<div id="collapseExample">
+    <div class="card card-body">
+        {% for item in list_data %}
+        {{ item }}<br/>
+        {% endfor %}
+    </div>
+</div>
+<br/>
+
+{% endif %}
+
+{% endblock %}

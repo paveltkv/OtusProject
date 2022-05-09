@@ -1,0 +1,11 @@
+{% extends 'base.html' %}
+
+{% block main_content %}
+<h1 style="display: inline-block">Add playlist</h1>
+<form method="post">
+    {% csrf_token %}
+    {{ form.as_p }}
+
+    <input type="submit" value="Save" class="btn btn-secondary">
+</form>
+{% endblock %}

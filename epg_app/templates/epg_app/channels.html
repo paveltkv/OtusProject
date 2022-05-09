@@ -1,0 +1,48 @@
+{% extends 'base.html' %}
+
+{% block main_content %}
+
+<h1>Search</h1>
+
+<form class="d-flex" method="post">
+    {% csrf_token %}
+    <input class="form-control me-2" type="search" placeholder="channel name" aria-label="Search" style="width:500px"
+           name="tvg_name" value="{% if search_tvg_name %}{{ search_tvg_name }}{% endif %}">
+    <button class="btn btn-secondary" type="submit">Search</button>
+</form>
+
+<h1>{% if epg %}
+    <a class="link-dark" href="{% url 'epg_app:epg_detail' epg.pk %}">{{ epg.name }}</a> >
+    {% endif %}
+    Channels{% if search_tvg_name %} search: {{ search_tvg_name }}{% endif %}
+</h1>
+
+{% if all_channels %}
+<table style="border:1px;border-colour:#000000">
+    {% for channel in all_channels %}
+    <tr>
+        <td style="width:50px;height:35px;">
+            {% if channel.icon_url %}
+            <img src="{{ channel.icon_url }}" style="height:30px;max-width:50px">
+            {% endif %}
+        </td>
+        <td style="width:350px;">
+            <a href="{% url 'programmes' channel.pk %}" class="link-dark" style="text-decoration: none;">
+                {{ channel.channel_id }}{% if not epg %} <i>({{ channel.epg_name }})</i>{% endif %}
+            </a>
+        </td>
+        <td>
+            {% if channel.programme %}{{ channel.programme }}{% endif %}
+        </td>
+    </tr>
+    {% endfor %}
+</table>
+
+
+{% include "./pagination.html" with page=posts %}
+
+{% else %}
+No channels found
+{% endif %}
+
+{% endblock %}

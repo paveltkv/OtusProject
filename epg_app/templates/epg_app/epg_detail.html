@@ -1,0 +1,58 @@
+{% extends 'base.html' %}
+
+{% block main_content %}
+<h1 style="display: inline-block"><a href="{% url 'epg_sources' %}" class="link-dark">EPG sources</a> > {{ object.name }}</h1><br/>
+Url: <b>{{ object.url }}</b><br/>
+{% if object.logos_url %}
+Logos url: <b>{{ object.logos_url }}</b><br/>
+{% endif %}
+{% if object.error_message %}
+Error message: <b>{{ object.error_message }}</b><br/>
+{% endif %}
+{% if epg.download_time %}
+Downloaded: <b>{{ object.download_time }}</b><br/>
+{% endif %}
+{% if epg.update_time %}
+Loaded: <b>{{ object.update_time }}</b><br/>
+Channels: <b>{{ object.channels_num }}</b><br/>
+Programmes: <b>{{ object.programme_num }}</b><br/>
+{% endif %}
+{% if size_str %}
+Size: <b>{{ size_str }}</b>
+{% endif %}
+<table style="margin: 10px 0px 10px 0px">
+    <tr>
+        {% if user.is_superuser %}
+        <td style="padding-right: 15px;">
+            <form action="{% url 'epg_app:edit_epg' object.pk %}">
+                <input type="submit" value="Edit" class="btn btn-secondary"/>
+            </form>
+        </td>
+        <td style="padding-right: 15px;">
+            <form action="{% url 'epg_app:delete_epg' object.pk %}">
+                <input type="submit" value="Delete" class="btn btn-secondary"/>
+            </form>
+        </td>
+        {% endif %}
+        {% if object.update_time %}
+        <td style="padding-right: 15px;">
+            <form action="{% url 'epg_channels' object.pk %}">
+                <input type="submit" value="Channels" class="btn btn-secondary"/>
+            </form>
+        </td>
+        {% endif %}
+
+        {% if user.is_superuser %}
+        {% if object.download_time %}
+        <td style="padding-right: 15px;">
+            <form action="{% url 'epg_app:load_epg' object.pk %}">
+                <input type="submit" value="Force load" class="btn btn-danger"/>
+            </form>
+        </td>
+        {% endif %}
+        {% endif %}
+    </tr>
+</table>
+
+
+{% endblock %}
