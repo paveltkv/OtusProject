@@ -70,19 +70,15 @@ def epg_channels(request, pk=None):
         epg = Epg.objects.get(pk=pk)
         all_channels = EpgChannel.objects.filter(epg_item__epg_id=pk).order_by('id')
 
-    tvg_name = None
-
-    if request.method == "POST":
-        print("POST")
-        tvg_name = request.POST.get("tvg_name")
-        if tvg_name:
-            print(tvg_name.lower())
-            tn = tvg_name.lower()
-            if pk:
-                all_channels = EpgChannel.objects.filter(Q(epg_item__epg_id=pk) &
-                                                         (Q(tvg_name_synonyms__has_key=tn) | Q(tvg_name__contains=tn)))
-            else:
-                all_channels = EpgChannel.objects.filter(Q(tvg_name_synonyms__has_key=tn) | Q(tvg_name__contains=tn))
+    tvg_name = request.GET.get("tvg_name")
+    if tvg_name:
+        print(tvg_name.lower())
+        tn = tvg_name.lower()
+        if pk:
+            all_channels = EpgChannel.objects.filter(Q(epg_item__epg_id=pk) &
+                                                     (Q(tvg_name_synonyms__has_key=tn) | Q(tvg_name__contains=tn)))
+        else:
+            all_channels = EpgChannel.objects.filter(Q(tvg_name_synonyms__has_key=tn) | Q(tvg_name__contains=tn))
 
     paginator = Paginator(all_channels, 10)
     page = request.GET.get('page')

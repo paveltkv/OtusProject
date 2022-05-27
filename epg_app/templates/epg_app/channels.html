@@ -4,7 +4,7 @@
 
 <h1>Search</h1>
 
-<form class="d-flex" method="post">
+<form class="d-flex" method="get">
     {% csrf_token %}
     <input class="form-control me-2" type="search" placeholder="channel name" aria-label="Search" style="width:500px"
            name="tvg_name" value="{% if search_tvg_name %}{{ search_tvg_name }}{% endif %}">
